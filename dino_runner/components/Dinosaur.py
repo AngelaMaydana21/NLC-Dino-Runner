@@ -2,13 +2,14 @@ from pygame.sprite import Sprite
 from dino_runner.utils.constants import RUNNING, DUCKING, JUMPING
 import pygame
 
-class Dinosaur(Sprite):         #Está heredando de Sprite
+
+class Dinosaur(Sprite):
     X_POS = 50
     Y_POS = 315
     Y_POS_DUCK = 350
     JUMP_VEL = 10
 
-    def __init__(self):         #Metodo constructor
+    def __init__(self):
         self.image = RUNNING[0]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
@@ -52,13 +53,12 @@ class Dinosaur(Sprite):         #Está heredando de Sprite
         self.dino_rect.y = self.Y_POS
         self.step_index += 1
 
-    def duck(self):             #Agacharse
+    def duck(self):
         self.image = DUCKING[0] if self.step_index <= 5 else DUCKING[1]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS_DUCK
         self.step_index += 1
-
 
     def jump(self):
         self.image = JUMPING
@@ -69,4 +69,3 @@ class Dinosaur(Sprite):         #Está heredando de Sprite
             self.dino_rect.y = self.Y_POS
             self.dino_jump = False
             self.jump_vel = self.JUMP_VEL
-
