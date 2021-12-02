@@ -3,6 +3,7 @@ import pygame
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 from dino_runner.components.Dinosaur import Dinosaur
+from dino_runner.components.text_utils import get_score_element, get_centered_message, get_death_acount
 
 
 class Game:
@@ -19,15 +20,23 @@ class Game:
         self.y_pos_bg = 380
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
+        self.points = 0
+        self.death_acount = 0
+        self.running = True
 
     def run(self):
+        self.obstacle_manager.reset_obstacles()
         # Game loop: events - update - draw
         self.playing = True
         while self.playing:
             self.events()
             self.update()
             self.draw()
-        pygame.quit()
+
+    def execute(self):
+        while self.running:
+            if not self.playing:
+                self.show_menu()
 
     def events(self):
         for event in pygame.event.get():
@@ -40,6 +49,7 @@ class Game:
         self.obstacle_manager.update(self)
 
     def draw(self):
+        self.score()
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
@@ -47,6 +57,43 @@ class Game:
         self.obstacle_manager.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
+
+    def score(self):
+        self.points += 1
+        if self.points % 100 == 0:
+            self.game_speed += 1
+        score,  score_rect = get_score_element(self.points)
+        self.screen.blit(score, score_rect)
+
+    def show_menu(self):
+        self.running = True
+        color = (250, 237, 240)
+        self.screen.fill(color)
+        self.print_menu_elements(self.death_acount)
+        pygame.display.update()
+
+        self.handle_key_events_on_menu()
+
+    def print_menu_elements(self, death_count = 0):
+        half_screen_height = SCREEN_HEIGHT // 2
+        half_screen_width = SCREEN_WIDTH // 2
+        text, text_rect = get_centered_message('Press any key to start the game')
+        self.screen.blit(text, text_rect)
+        text, text_rect = get_score_element(self.points)
+        self.screen.blit(text, text_rect)
+        text, text_rect = get_death_acount(self.death_acount)
+        self.screen.blit(text, text_rect)
+
+    def handle_key_events_on_menu(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+                self.playing = False
+                pygame.display.quit()
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYDOWN:
+                self.run()
 
     def draw_background(self):
         image_width = BG.get_width()

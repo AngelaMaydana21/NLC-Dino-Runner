@@ -3,14 +3,13 @@ from dino_runner.utils.constants import SCREEN_WIDTH
 
 
 class Obstacle(Sprite):
-    Y_POS = 330
 
-    def __init__(self, image, type):
+    def __init__(self, image, type,y_pos):
         self.image = image
         self.type = type
         self.rect = self.image[self.type].get_rect()
         self.rect.x = SCREEN_WIDTH
-        self.rect.y = self.Y_POS
+        self.rect.y = y_pos
 
     def update(self, game_speed, obstacles):
         self.rect.x -= game_speed
