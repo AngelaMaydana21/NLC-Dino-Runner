@@ -4,7 +4,8 @@ from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 from dino_runner.components.Dinosaur import Dinosaur
 from dino_runner.components.text_utils import get_score_element, get_centered_message, get_death_acount
-
+from dino_runner.components.power_ups.power_up_manager import PowerUpManager
+from dino_runner.components.Life.life_manager import LifeManager
 
 class Game:
 
@@ -23,15 +24,24 @@ class Game:
         self.points = 0
         self.death_acount = 0
         self.running = True
+        self.poweup_manager = PowerUpManager()
+        self.life_manager = LifeManager()
 
     def run(self):
-        self.obstacle_manager.reset_obstacles()
+        self.game_speed = 20
+        self.points = 0
+        self.create_components()
         # Game loop: events - update - draw
         self.playing = True
         while self.playing:
             self.events()
             self.update()
             self.draw()
+
+    def create_components(self):
+        self.obstacle_manager.reset_obstacles()
+        self.poweup_manager.reset_power_ups(self.points)
+        self.life_manager.new_lifes()
 
     def execute(self):
         while self.running:
@@ -47,14 +57,17 @@ class Game:
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
         self.obstacle_manager.update(self)
+        self.poweup_manager.update(self.points, self.game_speed, self.player)
 
     def draw(self):
-        self.score()
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
+        self.score()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
+        self.poweup_manager.draw(self.screen)
+        self.life_manager.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
 
@@ -64,6 +77,7 @@ class Game:
             self.game_speed += 1
         score,  score_rect = get_score_element(self.points)
         self.screen.blit(score, score_rect)
+        self.player.check_invincibility(self.screen)
 
     def show_menu(self):
         self.running = True

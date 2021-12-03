@@ -4,7 +4,6 @@ import pygame.time
 from dino_runner.components.obstacles.cactus import Cactus
 from dino_runner.utils.constants import SMALL_CACTUS, LARGE_CACTUS
 
-
 class ObstacleManager:
 
     def __init__(self):
@@ -25,10 +24,15 @@ class ObstacleManager:
             obst.update(game.game_speed, self.obs_list)
 
             if game.player.dino_rect.colliderect(obst.rect):
-                pygame.time.delay(500)
-                game.death_acount += 1
-                game.playing = False
-                break
+                if not game.player.shield:
+                    if game.life_manager.life_counter() == 1:
+                        game.death_acount += 1
+                        pygame.time.delay(500)
+                        game.playing = False
+                        break
+                    else:
+                        game.life_manager.delete_life()
+                self.obs_list.remove(obst)
 
     def reset_obstacles(self):
         self.obs_list = []
