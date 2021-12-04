@@ -5,12 +5,12 @@ FONT_STYLE = 'freesansbold.ttf'
 COLOR1 = (115, 119, 203)
 COLOR2 = (236, 37, 90)
 
-def get_score_element(points):
+def get_data_element(points, type, x_pos, y_pos):
 
     font = pygame.font.Font(FONT_STYLE, 30)
-    text = font.render('Points: {}'.format(points), True, COLOR1)
+    text = font.render('{}'.format(type)+': {}'.format(points), True, COLOR1)
     text_rect = text.get_rect()
-    text_rect.center = (100, 40)
+    text_rect.center = (x_pos, y_pos)
     return text, text_rect
 
 def get_centered_message(message, width = SCREEN_WIDTH//2, height = SCREEN_HEIGHT//2):
@@ -21,11 +21,4 @@ def get_centered_message(message, width = SCREEN_WIDTH//2, height = SCREEN_HEIGH
     text_rect.center = (width, height)
     return text, text_rect
 
-def get_death_acount(death_acount, width = SCREEN_WIDTH//2, height = 350):
-
-    font = pygame.font.Font(FONT_STYLE, 30)
-    text = font.render('Try: {}'.format(death_acount), True, COLOR1)
-    text_rect = text.get_rect()
-    text_rect.center = (width, height)
-    return text, text_rect
 

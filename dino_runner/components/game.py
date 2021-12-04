@@ -3,9 +3,10 @@ import pygame
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 from dino_runner.components.Dinosaur import Dinosaur
-from dino_runner.components.text_utils import get_score_element, get_centered_message, get_death_acount
+from dino_runner.components.text_utils import get_data_element, get_centered_message
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
 from dino_runner.components.Life.life_manager import LifeManager
+
 
 class Game:
 
@@ -75,7 +76,7 @@ class Game:
         self.points += 1
         if self.points % 100 == 0:
             self.game_speed += 1
-        score,  score_rect = get_score_element(self.points)
+        score,  score_rect = get_data_element(self.points,'points',140,50)
         self.screen.blit(score, score_rect)
         self.player.check_invincibility(self.screen)
 
@@ -93,9 +94,9 @@ class Game:
         half_screen_width = SCREEN_WIDTH // 2
         text, text_rect = get_centered_message('Press any key to start the game')
         self.screen.blit(text, text_rect)
-        text, text_rect = get_score_element(self.points)
+        text, text_rect = get_data_element(self.points, 'points', 140, 50)
         self.screen.blit(text, text_rect)
-        text, text_rect = get_death_acount(self.death_acount)
+        text, text_rect = get_data_element(self.death_acount, 'death', SCREEN_WIDTH//2, 350)
         self.screen.blit(text, text_rect)
 
     def handle_key_events_on_menu(self):

@@ -1,5 +1,6 @@
 from dino_runner.components.Life.life import Life
 
+
 class LifeManager:
     def __init__(self):
         self.life_list = []
@@ -7,7 +8,7 @@ class LifeManager:
     def new_lifes(self):
         self.life_list = []
         total_lifes = 3 #Cantidad de vidas
-        pos_x = 27
+        pos_x = 1000
 
         for life in range(0, total_lifes):
             self.life_list.append(Life(pos_x))

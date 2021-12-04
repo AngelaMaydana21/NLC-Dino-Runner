@@ -23,7 +23,6 @@ class Dinosaur(Sprite):
         self.dino_duck = False
         self.dino_jump = False
         self.jump_vel = self.JUMP_VEL
-        #self.lives = 3
         self.set_up_booleans()
 
     def update(self, user_input):
